@@ -1,9 +1,11 @@
 package Utilidades;
 
+import Modelos.Cliente;
 import Modelos.Factura;
 import Modelos.LineaFactura;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class UtilidadesFactura {
 
@@ -37,5 +39,22 @@ public class UtilidadesFactura {
 
          return total;
      }
+
+    public Double gastoTotalCliente(List<Factura> facturas, Cliente cliente){
+
+        Double sumaTotalFactura = 0.0;
+
+        for (Factura factura : facturas){
+            if (factura.getCliente().equals(cliente)){
+                sumaTotalFactura += factura.getTotalAPagar();
+            }
+        }
+
+
+
+
+
+        return sumaTotalFactura;
+    }
 }
 

@@ -3,6 +3,7 @@ package Utilidades;
 import Modelos.Empleado;
 import Modelos.Empresa;
 import Modelos.TipoContrato;
+import Modelos.TipoEmpresa;
 
 import java.util.*;
 
@@ -83,12 +84,40 @@ public class UtilidadesEmpresa {
             empleadoContrato.put(getEmpleadosPorTipoContrato());
         }
 
-        for(Empresa empresas: empresas){
-
+        for(Empresa empresas: empresas) {
         }
-
-
-
         return empleadoContrato;
     }
+
+        public List<Empleado> getEmpleadosPymePracticas(List<Empresa> empresas){
+
+            List<Empleado> empleadosPymesPracticas = new ArrayList<>();
+
+            for(Empresa empresa: empresas){
+                if (empresa.getTipoEmpresa().equals(TipoEmpresa.PYME)) {
+                    for (Empleado empleado : empresa.getEmpleado()) {
+                        if (empleado.getContrato().equals(TipoContrato.PRACTICAS)) {
+                            empleadosPymesPracticas.add(empleado);
+                        }
+                    }
+                }
+            }
+        return empleadosPymesPracticas;
+        }
+
+    public Map<Empresa,Empleado> getLosMejorPagadosPorEmpresa(List<Empresa> empresas){
+
+        Map<Empresa,Empleado> empleadoMejorPagado = new HashMap<>();
+
+        for (Empresa empresa: empresas){
+            for (Empleado empleado: empresa.getEmpleado())
+                empleadoMejorPagado.put(empresa,getMejorEmpleadoPagado(Collections.singletonList(empresa)));
+        }
+
+        return empleadoMejorPagado;
+    }
+
+
+
+
 }
