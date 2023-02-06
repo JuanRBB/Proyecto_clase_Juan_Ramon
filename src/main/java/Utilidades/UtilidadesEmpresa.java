@@ -62,16 +62,19 @@ public class UtilidadesEmpresa {
 
          return mejorPAgado;
     }
-    public Map<TipoContrato, List<Empleado>> getEmpleadosPorTipoContrato(Empresa empresas){
+    public Map<TipoContrato, List<Empleado>> getEmpleadosPorContrato(Empresa empresas){
 
         Map<TipoContrato, List<Empleado>> empleadoContrato = new HashMap<>();
 
-        for (TipoContrato tipoContrato : TipoContrato.values()){
-            empleadoContrato.put(tipoContrato,new ArrayList<>());
-        }
+        for (Empleado empleado : empresas.getEmpleado()){
 
-        for(Empleado empleado: empresas.getEmpleado()){
-            empleadoContrato.get(TipoContrato.values()).add(empleado);
+            if (empleadoContrato.containsKey(empleado.getContrato().getTipoContrato())){
+                empleadoContrato.get(empleado.getContrato().getTipoContrato()).add(empleado);
+            }
+            else{
+                empleadoContrato.put(empleado.getContrato().getTipoContrato(), new ArrayList<>());
+                empleadoContrato.get(empleado.getContrato().getTipoContrato()).add(empleado);
+            }
         }
         return empleadoContrato;
     }
@@ -80,30 +83,29 @@ public class UtilidadesEmpresa {
 
         Map<Empresa, Map<TipoContrato, List<Empleado>>> empleadoContrato = new HashMap<>();
 
-        for (TipoContrato tipoContratos : TipoContrato.values()){
-            empleadoContrato.put(getEmpleadosPorTipoContrato());
-        }
+        for(Empresa empresa: empresas){
+            empleadoContrato.put(empresa,getEmpleadosPorContrato(empresa));
+            }
 
-        for(Empresa empresas: empresas) {
-        }
         return empleadoContrato;
     }
 
-        public List<Empleado> getEmpleadosPymePracticas(List<Empresa> empresas){
 
-            List<Empleado> empleadosPymesPracticas = new ArrayList<>();
+    public List<Empleado> getEmpleadosPymePracticas(List<Empresa> empresas){
 
-            for(Empresa empresa: empresas){
-                if (empresa.getTipoEmpresa().equals(TipoEmpresa.PYME)) {
-                    for (Empleado empleado : empresa.getEmpleado()) {
-                        if (empleado.getContrato().equals(TipoContrato.PRACTICAS)) {
-                            empleadosPymesPracticas.add(empleado);
+        List<Empleado> empleadosPymesPracticas = new ArrayList<>();
+
+        for(Empresa empresa: empresas){
+            if (empresa.getTipoEmpresa().equals(TipoEmpresa.PYME)) {
+                for (Empleado empleado : empresa.getEmpleado()) {
+                    if (empleado.getContrato().equals(TipoContrato.PRACTICAS)) {
+                        empleadosPymesPracticas.add(empleado);
                         }
                     }
                 }
             }
         return empleadosPymesPracticas;
-        }
+    }
 
     public Map<Empresa,Empleado> getLosMejorPagadosPorEmpresa(List<Empresa> empresas){
 
